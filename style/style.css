@@ -1,1 +1,22 @@
 /* style goes here */
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #45badd;
+}
+
+.container {
+  height: 100vh;
+  width: 100vw;/* dynamicly scale to the size of the window*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: url('/assets/robot.gif');
+  background-size: contain; /*the image will be fully visible on the screen*/
+  background-position: left center;
+  background-repeat: no-repeat;
+}
