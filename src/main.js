@@ -2,8 +2,12 @@
  * @author Nkwe Ahoume Boris
  */
 
+/**
+ * encapsulation of HTMLElements
+ */
 const BUTTON = document.getElementById("button");
 const AUDIO_ELEMENT = document.getElementById("audio");
+
 /**
  * VoiceRSS Javascript SDK
  */
@@ -114,10 +118,15 @@ const VoiceRSS = {
   },
 };
 
-function test() {
+/**
+ * pass jokes to VoiceRSS so he can read it
+ */
+function tellAJoke(joke) {
+  console.log(`tell me: ${joke}`);
+
   VoiceRSS.speech({
     key: "c5ad06f087934f43b79de3991cef9b27",
-    src: "Hello, world!",
+    src: joke,
     hl: "en-us",
     v: "Linda",
     r: 0,
@@ -126,4 +135,26 @@ function test() {
     ssml: false,
   });
 }
-test();
+
+/**
+ * get jokes from jokeapi:
+ */
+async function getJokes() {
+  let joke = "";
+  const API_URL =
+    "https://v2.jokeapi.dev/joke/Programming?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
+  try {
+    const RESPONCE = await fetch(API_URL);
+    const DATA = await RESPONCE.json();
+    if (DATA.setup) {
+      joke = `${DATA.setup} ... ${DATA.delivery}`;
+    } else {
+      joke = DATA.joke;
+    }
+    tellAJoke(joke);
+  } catch (error) {
+    console.error(`there is a fetch error: ${error}`);
+  }
+}
+
+getJokes();
