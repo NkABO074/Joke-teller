@@ -38,7 +38,8 @@ const VoiceRSS = {
         case "caf":
           a = new Audio().canPlayType("audio/x-caf").replace("no", "");
       }
-      if (!a) throw "The browser does not support the audio codec " + e.c;
+      if (!a) throw "TAUDIO_ELEMENT.scr = t.responseText";
+      // AUDIO_ELEMENT.play();he browser does not support the audio codec " + e.c;
     }
   },
   _request: function (e) {
@@ -48,7 +49,7 @@ const VoiceRSS = {
       if (4 == t.readyState && 200 == t.status) {
         if (0 == t.responseText.indexOf("ERROR")) throw t.responseText;
         // new Audio(t.responseText).play();
-        AUDIO_ELEMENT.scr = t.responseText;
+        AUDIO_ELEMENT.src = t.responseText;
         AUDIO_ELEMENT.play();
       }
     }),
@@ -122,8 +123,6 @@ const VoiceRSS = {
  * pass jokes to VoiceRSS so he can read it
  */
 function tellAJoke(joke) {
-  console.log(`tell me: ${joke}`);
-
   VoiceRSS.speech({
     key: "c5ad06f087934f43b79de3991cef9b27",
     src: joke,
@@ -134,6 +133,13 @@ function tellAJoke(joke) {
     f: "44khz_16bit_stereo",
     ssml: false,
   });
+}
+
+/**
+ * Disable/Enable the button
+ */
+function toggleButton() {
+  BUTTON.disabled = !BUTTON.disabled;
 }
 
 /**
@@ -151,10 +157,16 @@ async function getJokes() {
     } else {
       joke = DATA.joke;
     }
+    // send to text-to-speech API
     tellAJoke(joke);
+
+    // Disable the button
+    toggleButton();
   } catch (error) {
     console.error(`there is a fetch error: ${error}`);
   }
 }
 
-getJokes();
+// eventlisteners
+BUTTON.addEventListener("click", getJokes);
+AUDIO_ELEMENT.addEventListener("ended", toggleButton);
